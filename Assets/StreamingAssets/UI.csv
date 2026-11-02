@@ -1,0 +1,59 @@
+﻿id,idtexto,español,ingles
+UI,inicio,Inicio,Start
+,cargar,Cargar,Load
+,opciones,Opciones,Options
+,salir,Salir,Exit
+,resolucion,Resolución,Resolution
+,general,General,Master
+,musicaa,Música,Music
+,efectosa,Efectos,Effects
+,fc,Pantalla Completa,Full Screen
+,español,Español,Spanish
+,ingles,Ingles ,English
+,guardar,Guardar,Save
+,nombre,Nombre,Name
+,puntos,Puntos,Points
+,habilidad_sigilo,Sigilo,Stealth
+,habilidad_supervivencia,Supervivencia,Survival
+,habilidad_investigar,Investigar,Investigate
+,habilidad_intimidar,Intimidar,Intimidate
+,habilidad_atletismo,Atletismo,Athletics
+,habilidad_acrobacia,Acrobacia,Acrobatics
+,habilidad_enganar,Engañar,Deceive
+,habilidad_comerciar,Comerciar,Trade
+,habilidad_diplomacia,Diplomacia,Diplomacy
+,habilidad_escuchar,Escuchar,Listen
+,habilidad_avistar,Avistar,Spot
+,habilidad_distancia,Distancia,Ranged
+,habilidad_unamano,Una Mano,One-handed
+,habilidad_dosmanos,Dos manos,Two-handed
+,habilidad_desarmado,Desarmado,Unarmed
+,habilidad_exotica,Exotica,Exotic
+,habilidad_arcana,Arcana,Arcane
+,habilidad_divina,Divina,Divine
+,habilidad_pura,Pura,Pure
+,habilidades,Habilidades,Skill
+,combate,Combate,Combat
+,si,Si ,Yes
+,no,No,No
+,mensajeTerminar,¿Deseas terminar la creación de personaje?,Do you want to finish character creation?
+,mensajeAlerta,No tienes ninguna habilidad de armas con nivel deberias subir una!,"You don't have any weapon skills at a level, you should level one up!"
+,Facil,Fácil,Easy
+,Normal,Normal,Normal
+,Dificil,Difícil,Hard
+,victoria,¡Ganaste!,You won!
+,derrota,¡Perdiste!,You lost!
+,palabra,La palabra era:,The word was:
+,Reiniciar,Reiniciar,Restart
+,Volver,Volver,Back
+,record,Mejor:,Best:
+,recordPalabras,Palabras:,Words:
+historiasOrigenes,guerro,Guerro,Warrior
+,picaro,Picaro,Rogue
+,exiliado,Exiliado,Exiled
+,amnesico,Amnésico,Amnesic
+,gladiador,Gladiador,Gladiator
+,gladiadorh,"Naciste en una arena de batalla, mientras crecías tu mente pensó tu vida terminaría donde empezó, sin embargo al crecer nunca pudieron terminar contigo, viviste y luchaste por tanto tiempo que conseguiste aquello que es prometido pero pocos consiguen, te volviste un hombre libre. Con el tiempo vivir en la civilización te era extraño, tu mente estaba a la espera de una pelea que nunca llegaba, con el tiempo tus instintos fallaron y atacaste a un inocente, debido a este acto fuiste expulsado de tu ciudad únicamente perdonado por tu leyenda","You were born in a battle arena, and as you grew up, your mind thought your life would end where it began. However, as you grew, they could never finish you off. You lived and fought for so long that you achieved what is promised but few attain: you became a free man. Over time, life in civilization felt strange to you. Your mind yearned for a fight that never came. Eventually, your instincts failed you, and you attacked an innocent. Because of this act, you were banished from your city, forgiven only by your legend."
+,picaroh,"Naciste en un barrio pobre, cada bocado que diste tuviste que luchar por el, mientras crecias te volviste sumamente cauteloso teniendo un pequeño circulo de personas de confianza, con el tiempo te uniste al gremio de mercenarios donde demostraste ser un conocerdor de los bajos fondos, para ti, cada contrato era solo una paga mas para ti","You were born in a poor neighborhood; every bite you ate was a struggle. As you grew up, you became extremely cautious, maintaining a small circle of trusted people. Eventually, you joined the mercenary guild, where you proved to be an expert on the underworld. For you, every contract was just another paycheck."
+,exiliadoh,"Naciste en el extranjero siendo el primogénito de una familia pudiente, entrenado desde niño en el arte del combate y la política. Tu talento brilló durante tu infancia y adolescencia; tu vida iba muy bien encaminada hasta que un día cometiste un pecado, un pecado tan enorme que solo te quedó una elección... El exilio","You were born abroad, the firstborn of a wealthy family, trained from childhood in the arts of combat and politics. Your talent shone brightly throughout your childhood and adolescence; your life was on a perfect course until one day you committed a sin, a sin so enormous that only one choice remained... Exile"
+,amnesicoh,"Un día despertaste, sin conocer tu nombre ni tu origen y, más preocupante para ti, con una misteriosa marca en tu pecho. Vagaste por los alrededores completamente desorientado hasta que una pareja de ancianos te tomó bajo su cuidado; eventualmente, te fuiste de su hogar buscando respuestas.","One day you woke up, not knowing your name or where you came from, and, more worryingly, with a mysterious mark on your chest. You wandered around completely disoriented until an elderly couple took you in; eventually, you left their home searching for answers."
