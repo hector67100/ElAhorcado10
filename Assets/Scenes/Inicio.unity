@@ -472,7 +472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8119315362413493466, guid: d93d0f877cbdf8b41bcdf6e8c0b140b3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6480
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8119315362413493466, guid: d93d0f877cbdf8b41bcdf6e8c0b140b3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2169,8 +2169,8 @@ Canvas:
   m_GameObject: {fileID: 1600371395}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
-  m_Camera: {fileID: 331713918}
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -2456,7 +2456,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 9143868440440847147, guid: dc10138558ea3c625945ed93abcd18ad, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dc10138558ea3c625945ed93abcd18ad, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

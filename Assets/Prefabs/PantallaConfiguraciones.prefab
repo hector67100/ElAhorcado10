@@ -9152,6 +9152,7 @@ MonoBehaviour:
   volumeSlider: {fileID: 8119315361477653085}
   musicaSlider: {fileID: 8119315362414972240}
   efectosSlider: {fileID: 8119315362016489906}
+  fullscreenToggle: {fileID: 8119315362388327374}
   currentVolume: 0
   efectosVolume: 0
   musicasVolume: 0

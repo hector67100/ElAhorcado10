@@ -16,29 +16,81 @@ public class configuracion : MonoBehaviour
     public Slider volumeSlider;
     public Slider musicaSlider;
     public Slider efectosSlider;
+    public Toggle fullscreenToggle;
     [SerializeField] float currentVolume;
     [SerializeField] float efectosVolume;
     [SerializeField] float musicasVolume;
     [SerializeField] int Idioma;
     Resolution[] resolutions;
     List<string> resoluciones  = new List<string>();
+
+    const string ClaveResolucion = "ResolutionPreference";
+    const string ClaveFullscreen = "FullscreenPreference";
+
     // Start is called before the first frame update
     public void cargarConf()
     { 
         resolutions = Screen.resolutions;
-        int currentResolutionIndex = 0;
+        resoluciones.Clear();
+
+        for (int i = 0; i < resolutions.Length; i++)
+            resoluciones.Add(resolutions[i].width + " x " + resolutions[i].height);
+
+        resolutionDropdown.ClearOptions();
+        resolutionDropdown.AddOptions(resoluciones);
+
+        LoadSettings(IndiceResolucionActual());
+        AplicarModoVentana();
+    }
+
+    int IndiceResolucionActual()
+    {
+        int indice = 0;
 
         for (int i = 0; i < resolutions.Length; i++)
         {
-            resoluciones.Add(resolutions[i].width + " x " + resolutions[i].height);
-
-            if (resolutions[i].width == Screen.currentResolution.width 
+            if (resolutions[i].width == Screen.currentResolution.width
                 && resolutions[i].height == Screen.currentResolution.height)
-                currentResolutionIndex = i;
+                indice = i;
         }
 
-        resolutionDropdown.AddOptions(resoluciones);
-        LoadSettings(currentResolutionIndex);
+        return indice;
+    }
+
+    // La resolucion nativa del monitor. En pantalla completa hay que usarla siempre:
+    // si se renderiza a una resolucion menor, el sistema escala la imagen y la UI
+    // se pixelea.
+    static Resolution ResolucionNativa()
+    {
+        int ancho = 0;
+        int alto = 0;
+
+        Display principal = Display.main;
+
+        if (principal != null)
+        {
+            ancho = principal.systemWidth;
+            alto = principal.systemHeight;
+        }
+
+        if (ancho <= 0 || alto <= 0)
+        {
+            Resolution actual = Screen.currentResolution;
+            ancho = actual.width;
+            alto = actual.height;
+        }
+
+        return new Resolution { width = ancho, height = alto };
+    }
+
+    Resolution ResolucionSeleccionada()
+    {
+        int indice = resolutionDropdown != null ? resolutionDropdown.value : 0;
+
+        if (resolutions != null && indice >= 0 && indice < resolutions.Length)
+            return resolutions[indice];
+
+        return Screen.currentResolution;
     }
     
     public void SetVolumenMaster(float volume)
@@ -71,14 +123,69 @@ public class configuracion : MonoBehaviour
 
     public void SetFullscreen(bool isFullscreen)
     {
-        Screen.fullScreen = isFullscreen;
+        if (fullscreenToggle != null && fullscreenToggle.isOn != isFullscreen)
+            fullscreenToggle.SetIsOnWithoutNotify(isFullscreen);
+
+        // En pantalla completa la resolucion la impone el monitor, asi que el
+        // desplegable no tiene sentido y se desactiva.
+        if (resolutionDropdown != null)
+            resolutionDropdown.interactable = !isFullscreen;
+
+        if (isFullscreen)
+        {
+            Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+
+            Resolution nativa = ResolucionNativa();
+            AplicarResolucion(nativa.width, nativa.height, FullScreenMode.FullScreenWindow);
+        }
+        else
+        {
+            Screen.fullScreenMode = FullScreenMode.Windowed;
+
+            Resolution r = ResolucionSeleccionada();
+            AplicarResolucion(r.width, r.height, FullScreenMode.Windowed);
+        }
     }
 
     public void SetResolution(int resolutionIndex)
     {
-        Resolution resolution = resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, 
-        resolution.height, Screen.fullScreen);
+        if (resolutions == null || resolutionIndex < 0 || resolutionIndex >= resolutions.Length)
+            return;
+
+        if (resolutionDropdown != null && resolutionDropdown.value != resolutionIndex)
+            resolutionDropdown.SetValueWithoutNotify(resolutionIndex);
+
+        if (Screen.fullScreen)
+        {
+            // En pantalla completa la resolucion la impone el monitor. Aplicar una
+            // menor haria que el sistema escalase la imagen (UI pixelada), asi que
+            // se ignora y se deja el desplegable para el modo ventana.
+            Resolution nativa = ResolucionNativa();
+            AplicarResolucion(nativa.width, nativa.height, FullScreenMode.FullScreenWindow);
+            return;
+        }
+
+        Resolution r = resolutions[resolutionIndex];
+        AplicarResolucion(r.width, r.height, FullScreenMode.Windowed);
+    }
+
+    static void AplicarResolucion(int ancho, int alto, FullScreenMode modo)
+    {
+        // En el editor Screen.SetResolution solo cambia el tamano del Game view,
+        // asi que no se fuerza la resolucion del monitor.
+        if (Application.isEditor)
+            return;
+
+        Screen.SetResolution(ancho, alto, modo);
+    }
+
+    void AplicarModoVentana()
+    {
+        bool pantallaCompleta = PlayerPrefs.HasKey(ClaveFullscreen)
+            ? Convert.ToBoolean(PlayerPrefs.GetInt(ClaveFullscreen))
+            : true;
+
+        SetFullscreen(pantallaCompleta);
     }
 
     public void SetIdioma(int idiomaIndex)
@@ -125,13 +232,15 @@ public class configuracion : MonoBehaviour
     {
         PlayerPrefs.SetInt("QualitySettingPreference", 
                 qualityDropdown.value);
-        PlayerPrefs.SetInt("ResolutionPreference", 
-                resolutionDropdown.value);
+        // Se guarda como "ancho x alto" y no como indice: el indice depende de las
+        // resoluciones que liste el SO en cada maquina.
+        Resolution r = ResolucionSeleccionada();
+        PlayerPrefs.SetString(ClaveResolucion, r.width + "x" + r.height);
         PlayerPrefs.SetInt("TextureQualityPreference", 
                 textureDropdown.value);
         PlayerPrefs.SetInt("AntiAliasingPreference", 
                 aaDropdown.value);
-        PlayerPrefs.SetInt("FullscreenPreference", 
+        PlayerPrefs.SetInt(ClaveFullscreen, 
                 Convert.ToInt32(Screen.fullScreen));
         PlayerPrefs.SetFloat("VolumePreference", 
                 volumeSlider.value);
@@ -144,6 +253,33 @@ public class configuracion : MonoBehaviour
         PlayerPrefs.Save();                 
     }
 
+    int IndiceResolucionGuardada()
+    {
+        string guardada = PlayerPrefs.GetString(ClaveResolucion, "");
+
+        if (!string.IsNullOrEmpty(guardada))
+        {
+            for (int i = 0; i < resolutions.Length; i++)
+            {
+                if ((resolutions[i].width + "x" + resolutions[i].height) == guardada)
+                    return i;
+            }
+
+            return -1;
+        }
+
+        // Formato antiguo: indice dentro de Screen.resolutions.
+        if (PlayerPrefs.HasKey(ClaveResolucion))
+        {
+            int indice = PlayerPrefs.GetInt(ClaveResolucion);
+
+            if (indice >= 0 && indice < resolutions.Length)
+                return indice;
+        }
+
+        return -1;
+    }
+
     public void LoadSettings(int currentResolutionIndex)
     {
         if (PlayerPrefs.HasKey("QualitySettingPreference"))
@@ -151,11 +287,13 @@ public class configuracion : MonoBehaviour
                         PlayerPrefs.GetInt("QualitySettingPreference");
         else
             qualityDropdown.value = 3;
-        if (PlayerPrefs.HasKey("ResolutionPreference"))
-            resolutionDropdown.value = 
-                        PlayerPrefs.GetInt("ResolutionPreference");
-        else
-            resolutionDropdown.value = currentResolutionIndex;
+        int indiceResolucion = IndiceResolucionGuardada();
+
+        if (indiceResolucion < 0)
+            indiceResolucion = currentResolutionIndex;
+
+        // Sin notify: el modo de ventana se aplica despues, en AplicarModoVentana.
+        resolutionDropdown.SetValueWithoutNotify(indiceResolucion);
         if (PlayerPrefs.HasKey("TextureQualityPreference"))
             textureDropdown.value = 
                         PlayerPrefs.GetInt("TextureQualityPreference");
@@ -166,11 +304,6 @@ public class configuracion : MonoBehaviour
                         PlayerPrefs.GetInt("AntiAliasingPreference");
         else
             aaDropdown.value = 1;
-        if (PlayerPrefs.HasKey("FullscreenPreference"))
-            Screen.fullScreen = 
-            Convert.ToBoolean(PlayerPrefs.GetInt("FullscreenPreference"));
-        else
-            Screen.fullScreen = true;
         if (PlayerPrefs.HasKey("VolumePreference"))
             volumeSlider.value = 
                         VolumenGuardado("VolumePreference");
